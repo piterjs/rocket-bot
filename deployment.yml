@@ -1,0 +1,75 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bot
+  labels:
+    app: bot
+  namespace: chat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bot
+  template:
+    metadata:
+      labels:
+        app: bot
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+      - name: bot
+        image: piterjs/rocket-bot:{{build.tag}}
+        ports:
+        env:
+        - name: "BOT_LOG_LEVEL"
+          value: "debug"
+        - name: "BOT_NAME"
+          valueFrom:
+            configMapKeyRef:
+              name: bot
+              key: name
+        - name: "ROCKETCHAT_URL"
+          valueFrom:
+            configMapKeyRef:
+              name: bot
+              key: url
+        - name: "ROCKETCHAT_USER"
+          valueFrom:
+            configMapKeyRef:
+              name: bot
+              key: user
+        - name: "ROCKETCHAT_PASSWORD"
+          valueFrom:
+            configMapKeyRef:
+              name: bot
+              key: password
+        - name: "RESPOND_TO_DM"
+          value: "true"
+        - name: "RESPOND_TO_EDITED"
+          value: "false"
+        - name: "LISTEN_ON_ALL_PUBLIC"
+          value: "false"
+        - name: "INVITE_ROLES"
+          value: "team,admin"
+        - name: "SMTP_HOST"
+          valueFrom:
+            configMapKeyRef:
+              name: bot
+              key: smtp_host
+        - name: "SMTP_PORT"
+          value: "25"
+        - name: "SMTP_USER"
+          valueFrom:
+            configMapKeyRef:
+              name: bot
+              key: smtp_user
+        - name: "SMTP_PASS"
+          valueFrom:
+            configMapKeyRef:
+              name: bot
+              key: smtp_pass
+        - name: "SMTP_FROM"
+          valueFrom:
+            configMapKeyRef:
+              name: bot
+              key: smtp_from

@@ -1,0 +1,101 @@
+kind: pipeline
+name: app
+steps:
+- name: build
+  image: node:8
+  commands:
+    - npm install
+
+- name: docker
+  image: plugins/docker
+  settings:
+    repo: piterjs/rocket-bot
+    dockerfile: Dockerfile
+    tags:
+    - beta-${DRONE_COMMIT:0:8}
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+
+trigger:
+  event:
+  - push
+  branch:
+  - master
+
+---
+kind: pipeline
+name: app
+steps:
+- name: build
+  image: node:8
+  commands:
+    - npm install
+
+- name: docker
+  image: plugins/docker
+  settings:
+    repo: piterjs/rocket-bot
+    dockerfile: Dockerfile
+    tags:
+    - "${DRONE_TAG}"
+    - latest
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+
+- name: deploy
+  image: vallard/drone-kube
+  environment:
+    KUBE_SERVER:
+      from_secret: KUBE_SERVER
+    KUBE_TOKEN:
+      from_secret: KUBE_TOKEN
+    KUBE_CA:
+      from_secret: KUBE_CA
+  settings:
+    template: deployment.yml
+    namespace: chat
+
+trigger:
+  event:
+  - tag
+
+---
+kind: pipeline
+name: after
+
+steps:
+- name: notify
+  image: mike1pol/drone-rocket
+  settings:
+    url:
+      from_secret: rocket_url
+    user_id:
+      from_secret: rocket_id
+    token:
+      from_secret: rocket_token
+    channel:
+      from_secret: rocket_channel
+    message: >
+      {{#success build.status}}✅{{else}}❌{{/success}} Build {{build.status}}: *{{repo.namespace}}/{{repo.name}}*
+
+      build: {{build.number}}
+
+      commit: {{build.branch}}:{{build.commit}}
+
+      By: {{build.author}}
+
+      {{build.message}}
+
+      {{build.link}}
+
+depends_on:
+- app
+
+trigger:
+  status:
+  - success
+  - failure

@@ -1,7 +1,31 @@
 const bot = require('bbot');
 
 bot.global.direct(/!invite/, async b => {
-  const pm = b.message.text.split(' ').filter(v => v && v.length > 0);
+  const {
+    user: { id },
+    text
+  } = b.message;
+
+  const rolesEnv = process.env.INVITE_ROLES || '';
+  const invRoles = rolesEnv.split(',');
+
+  const user = await bot.adapters.message.api
+    .get('users.info', { userId: id })
+    .catch(() => null);
+
+  if (!user || !user.user || !user.user.roles) {
+    b.envelope.write('Forbidden');
+    b.respond();
+    return;
+  }
+  const hasRole = user.user.roles.find(v => invRoles.includes(v));
+  if (!hasRole) {
+    b.envelope.write('Forbidden');
+    b.respond();
+    return;
+  }
+
+  const pm = text.split(' ').filter(v => v && v.length > 0);
   pm.splice(0, 2);
   let email = null;
   let roomName = null;

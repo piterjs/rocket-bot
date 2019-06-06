@@ -1,7 +1,5 @@
 const bot = require('bbot');
 
-/** This is a workaround for Heroku to confirm web binding. */
-// @todo Remove this when bBot includes Express (next release)
 const http = require('http');
 const handle = (req, res) => res.end('hit');
 const server = http.createServer(handle);
@@ -12,4 +10,4 @@ require('./src/calendar');
 require('./src/invite');
 require('./src/help');
 
-bot.start(); // 🚀
+bot.start();
