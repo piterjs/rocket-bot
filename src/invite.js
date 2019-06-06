@@ -1,5 +1,15 @@
 const bot = require('bbot');
 
+function generatePassword() {
+  var length = 8,
+    charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+    retVal = '';
+  for (var i = 0, n = charset.length; i < length; ++i) {
+    retVal += charset.charAt(Math.floor(Math.random() * n));
+  }
+  return retVal;
+}
+
 bot.global.direct(/!invite/, async b => {
   const {
     user: { id },
@@ -80,7 +90,7 @@ bot.global.direct(/!invite/, async b => {
       const nu = {
         email,
         name: email.split('@')[0],
-        password: 'iLovePiterJS',
+        password: generatePassword(),
         username: email.split('@')[0],
         roles: ['user'],
         requirePasswordChange: true,

@@ -7,7 +7,7 @@
 ## Setup
 
 ## 1. 🍴  Fork or clone this repo
-  - `git clone piterjs/rocket-bot piterjs-bot
+  - `git clone piterjs/rocket-bot piterjs-bot`
 ## 2. 💻  Setup your project
   - `npm install` get dependencies
   - `copy .env.example .env` - copy env file and setup
