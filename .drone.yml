@@ -1,5 +1,5 @@
 kind: pipeline
-name: app
+name: dev
 steps:
 - name: build
   image: node:8
@@ -26,7 +26,7 @@ trigger:
 
 ---
 kind: pipeline
-name: app
+name: prod
 steps:
 - name: build
   image: node:8
@@ -93,7 +93,8 @@ steps:
       {{build.link}}
 
 depends_on:
-- app
+- dev
+- prod
 
 trigger:
   status:
