@@ -3,6 +3,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/piterjs/rocket-bot.svg)](https://hub.docker.com/r/piterjs/rocket-bot/)
 [![](https://images.microbadger.com/badges/version/piterjs/rocket-bot.svg)](https://microbadger.com/images/piterjs/rocket-bot "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/image/piterjs/rocket-bot.svg)](https://microbadger.com/images/piterjs/rocket-bot "Get your own image badge on microbadger.com")
+[![codecov](https://codecov.io/gh/piterjs/rocket-bot/branch/master/graph/badge.svg)](https://codecov.io/gh/piterjs/rocket-bot)
 
 ## Setup
 

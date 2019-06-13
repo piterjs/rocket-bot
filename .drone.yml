@@ -5,24 +5,27 @@ steps:
   image: node:8
   commands:
     - npm install
+    - npm test
 
-- name: docker
-  image: plugins/docker
-  settings:
-    repo: piterjs/rocket-bot
-    dockerfile: Dockerfile
-    tags:
-    - beta-${DRONE_COMMIT:0:8}
-    username:
-      from_secret: docker_username
-    password:
-      from_secret: docker_password
+- name: codecov
+  image: node:8
+  environment:
+    CODECOV_TOKEN:
+      from_secret: CODECOV_TOKEN
+  commands:
+    - npm run test-cov
+    - npm codecov
+  when:
+    event:
+    - push
+    - rollback
 
 trigger:
   event:
   - push
-  branch:
-  - master
+  - pull_request
+  - promote
+  - rollback
 
 ---
 kind: pipeline
@@ -32,6 +35,7 @@ steps:
   image: node:8
   commands:
     - npm install
+    - npm test
 
 - name: docker
   image: plugins/docker

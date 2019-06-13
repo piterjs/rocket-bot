@@ -27,15 +27,19 @@
     "PiterJS"
   ],
   "dependencies": {
-    "bbot": "^1.3.0",
+    "bbot": "^1.4.0",
     "ics": "^2.13.2",
     "moment": "^2.24.0",
     "nanoid": "^2.0.3",
     "nodemailer": "^6.2.1"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "codecov": "^3.5.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^6.1.4",
     "ndb": "^1.0.45",
-    "nodemon": "^1.18.3"
+    "nodemon": "^1.19.1"
   },
   "bot": {
     "message-adapter": "rocketchat"
@@ -43,6 +47,9 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "debug": "ndb index.js"
+    "debug": "ndb index.js",
+    "test": "mocha",
+    "test-cov": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
+    "codecov": "./node_modules/.bin/codecov"
   }
 }

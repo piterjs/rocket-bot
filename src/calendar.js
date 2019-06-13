@@ -4,6 +4,8 @@ const nanoid = require('nanoid');
 const ics = require('ics');
 const nodemailer = require('nodemailer');
 
+const parseDateFromString = require('../helpers/parseDateFromString');
+
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: process.env.SMTP_PORT,
@@ -17,29 +19,14 @@ const transporter = nodemailer.createTransport({
 const parseMeet = msg => {
   msg = msg.replace('!meet', '');
   msg = msg.replace(process.env.BOT_NAME, '');
-  const hdate = /(\d{1,2})\s(\w{3,9})\s(\d{2,4})\s(\d{1,2}):(\d{1,2})/i;
-  const idate = /(\d{2,4})-(\d{1,2})-(\d{1,2})\s(\d{1,2}):(\d{1,2})/i;
-  const isH = hdate.test(msg);
-  const isI = idate.test(msg);
-  if (!isH && !isI) {
-    throw new Error('Invalid date');
-  }
-  let date = null;
-  if (isH) {
-    date = moment(hdate.exec(msg)[0]);
-  } else {
-    date = moment(idate.exec(msg)[0]);
-  }
-  if (!date.isValid()) {
-    throw new Error('Invalid date');
-  }
+  let {date, rexp} = parseDateFromString(msg);
   if (date.isBefore(moment().subtract(10, 'minutes'))) {
     throw new Error(
       "We can't go back in time, but if you have a time machine mail me!"
     );
   }
   date = date.format('DD MMMM YYYY hh:mm');
-  msg = msg.replace(isH ? hdate : idate, '');
+  msg = msg.replace(rexp, '');
   let invites = [];
   const title = msg
     .split(' ')
