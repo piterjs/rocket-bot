@@ -1,7 +1,7 @@
 kind: pipeline
 name: dev
 steps:
-- name: build
+- name: test
   image: node:8
   commands:
     - npm install
@@ -14,7 +14,7 @@ steps:
       from_secret: CODECOV_TOKEN
   commands:
     - npm run test-cov
-    - npm codecov
+    - npm run codecov
   when:
     event:
     - push
@@ -31,7 +31,7 @@ trigger:
 kind: pipeline
 name: prod
 steps:
-- name: build
+- name: test
   image: node:8
   commands:
     - npm install
