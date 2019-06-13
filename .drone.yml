@@ -13,8 +13,7 @@ steps:
     CODECOV_TOKEN:
       from_secret: CODECOV_TOKEN
   commands:
-    - npm run test-cov
-    - npm run codecov
+    - npm run test:codecov
   when:
     event:
     - push

@@ -10,7 +10,7 @@ function generatePassword() {
   return retVal;
 }
 
-bot.global.direct(/!invite/, async b => {
+async function invite(b) {
   const {
     user: { id },
     text
@@ -24,14 +24,12 @@ bot.global.direct(/!invite/, async b => {
     .catch(() => null);
 
   if (!user || !user.user || !user.user.roles) {
-    b.envelope.write('Forbidden');
-    b.respond();
+    b.respond('Forbidden');
     return;
   }
   const hasRole = user.user.roles.find(v => invRoles.includes(v));
   if (!hasRole) {
-    b.envelope.write('Forbidden');
-    b.respond();
+    b.respond('Forbidden');
     return;
   }
 
@@ -47,8 +45,7 @@ bot.global.direct(/!invite/, async b => {
     }
   });
   if (!email || !roomName) {
-    b.envelope.write('Error: email or room not set');
-    b.respond();
+    b.respond('Error: email or room not set');
     return;
   }
   const q = {
@@ -123,4 +120,6 @@ bot.global.direct(/!invite/, async b => {
     }
   }
   b.respond();
-});
+}
+
+bot.global.direct(/!invite/, invite);

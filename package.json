@@ -36,10 +36,12 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "codecov": "^3.5.0",
-    "istanbul": "^0.4.5",
     "mocha": "^6.1.4",
     "ndb": "^1.0.45",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "nyc": "^14.1.1",
+    "rewire": "^4.0.1",
+    "sinon": "^7.3.2"
   },
   "bot": {
     "message-adapter": "rocketchat"
@@ -48,8 +50,8 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "debug": "ndb index.js",
-    "test": "mocha",
-    "test-cov": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
-    "codecov": "./node_modules/.bin/codecov"
+    "mocha": "mocha",
+    "test": "nyc mocha",
+    "test:codecov": "codecov"
   }
 }
