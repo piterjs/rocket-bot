@@ -25,7 +25,7 @@ const parseMeet = msg => {
       "We can't go back in time, but if you have a time machine mail me!"
     );
   }
-  date = date.format('DD MMMM YYYY hh:mm');
+  date = date.format('DD MMMM YYYY HH:mm');
   msg = msg.replace(rexp, '');
   let invites = [];
   const title = msg
@@ -71,7 +71,7 @@ const initMeet = async b => {
         fields: { emails: 1, name: 1, username: 1 },
         query: { _id: id }
       })
-      .catch(() => null);
+          .catch(() => null);
     const own = {
       ...resOwner.users[0],
       email: resOwner.users[0].emails[0].address
@@ -85,7 +85,7 @@ const initMeet = async b => {
             fields: { emails: 1, name: 1, username: 1 },
             query: { username: title.slice(1) }
           })
-          .catch(() => null);
+              .catch(() => null);
         if (res && res.count > 0) {
           const {
             users: [user]
