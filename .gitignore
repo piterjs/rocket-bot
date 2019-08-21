@@ -62,3 +62,4 @@ typings/
 
 # npm lockfile (using yarn)
 package-lock.json
+.DS_Store

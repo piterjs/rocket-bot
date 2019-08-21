@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const parseMeet = msg => {
-  msg = msg.replace('!meet', '');
+  msg = msg.replace('!meeting', '');
   msg = msg.replace(process.env.BOT_NAME, '');
   let {date, rexp} = parseDateFromString(msg);
   if (date.isBefore(moment().subtract(10, 'minutes'))) {
@@ -141,7 +141,7 @@ const initMeet = async b => {
 *Date:* ${date}
 *Organizer:* ${meet.org.name}
 *Invites:* ${meet.invites.map(v => (v.name ? v.name : v.email)).join(' ')}
-\`!meet create\` - to create`);
+\`!meeting create\` - to create`);
   } catch (err) {
     b.envelope.write(`Error: ${err.message}`);
   }
@@ -154,7 +154,6 @@ const createMeet = async b => {
   } = b.message;
   if (id in meetings) {
     const { title, date, url, org, invites } = { ...meetings[id] };
-    console.log(meetings[id]);
     const dd = moment(date);
     const data = {
       start: [
@@ -195,7 +194,7 @@ const createMeet = async b => {
           html: `<p>Invite to ${data.title} from ${data.organizer.name}</p>`,
           attachments: [{ filename: 'invite.ics', content: event }]
         };
-        const info = await transporter.sendMail(msg);
+        await transporter.sendMail(msg);
         b.envelope.write(`_Meeting was sended!_ Waiting you at ${date}`);
       } catch (err) {
         b.envelope.write('Error: sending email');
@@ -208,7 +207,7 @@ const createMeet = async b => {
   b.respond();
 };
 
-bot.global.direct(/!meet/, async b => {
+bot.global.direct(/!meeting/, async b => {
   const {
     user: {
       room: { type }
@@ -218,7 +217,7 @@ bot.global.direct(/!meet/, async b => {
   if (type !== 'd') {
     return;
   }
-  if (/!meet\screate/.test(text)) {
+  if (/!meeting\screate/.test(text)) {
     createMeet(b);
   } else {
     initMeet(b);

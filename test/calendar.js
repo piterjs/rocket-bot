@@ -42,7 +42,7 @@ describe('calendar.js', () => {
         invites: ['@test', '#test', 'test@email']
       };
       const nm = f(
-        `${process.env.BOT_NAME} !meet ${m.title} ${m.date} ${m.invites.join(
+        `${process.env.BOT_NAME} !meeting ${m.title} ${m.date} ${m.invites.join(
           ' '
         )}`
       );
@@ -56,7 +56,7 @@ describe('calendar.js', () => {
       };
       const nm = () =>
         f(
-          `${process.env.BOT_NAME} !meet ${m.title} ${m.date} ${m.invites.join(
+          `${process.env.BOT_NAME} !meeting ${m.title} ${m.date} ${m.invites.join(
             ' '
           )}`
         );
@@ -69,7 +69,7 @@ describe('calendar.js', () => {
         invites: []
       };
       const nm = f(
-        `${process.env.BOT_NAME} !meet ${m.title} ${m.date} ${m.invites.join(
+        `${process.env.BOT_NAME} !meeting ${m.title} ${m.date} ${m.invites.join(
           ' '
         )}`
       );
@@ -98,7 +98,7 @@ describe('calendar.js', () => {
     const f = calendar.__get__('initMeet');
     it('init meeting', async () => {
       const fq = new FQ(
-        '!meet Meetings name 4 Jun 2050 13:00 @user #channel meet@email.de'
+        '!meeting Meetings name 4 Jun 2050 13:00 @user #channel meet@email.de'
       );
       await f(fq);
       expect(fq.result).to.be.a('string').and.equal(`_Meeting:_
@@ -106,7 +106,7 @@ describe('calendar.js', () => {
 *Date:* 04 June 2050 13:00
 *Organizer:* Test 2
 *Invites:* Test 1 meet@email.de
-\`!meet create\` - to create`);
+\`!meeting create\` - to create`);
     });
   });
 });

@@ -6,7 +6,8 @@ module.exports = function fakeQuery(text, id = 2) {
     write: wr
   };
   this.message = {
-    user: { id },
+    user: { id, room: { type: 'd' } },
+    room: { type: 'd' },
     text
   };
   return this;
