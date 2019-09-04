@@ -34,6 +34,8 @@ name: prod
 steps:
 - name: test
   image: node:8
+  environment:
+    BOT_NAME: test
   commands:
     - npm install
     - npm test
